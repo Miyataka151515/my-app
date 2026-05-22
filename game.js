@@ -290,7 +290,10 @@ function unlockAudio() {
   }
 
   state.audioUnlocked = true;
-  for (const sound of Object.values(state.audio)) {
+  for (const [name, sound] of Object.entries(state.audio)) {
+    if (name === "bgm") {
+      continue;
+    }
     const originalVolume = sound.volume;
     sound.muted = true;
     sound.volume = 0;
@@ -332,6 +335,8 @@ function startBgm() {
     return;
   }
 
+  bgm.muted = false;
+  bgm.volume = 0.24;
   bgm.currentTime = 0;
   bgm.play().catch(() => {});
 }
