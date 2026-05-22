@@ -285,7 +285,7 @@ body {
 .overlay-card {
   position: relative;
   width: min(94%, 420px);
-  max-height: 58%;
+  max-height: 72%;
   overflow: auto;
   padding: 18px;
   border: 5px solid #fff0ca;
@@ -460,10 +460,11 @@ body {
 
 .ranking-panel {
   margin-top: 12px;
-  padding: 10px 12px;
+  padding: 12px 14px;
   border: 3px solid rgba(233, 179, 109, 0.75);
   border-radius: 12px;
   background: rgba(255, 255, 248, 0.9);
+  box-shadow: inset 0 0 0 2px rgba(255, 236, 185, 0.9);
 }
 
 .ranking-panel-head {
@@ -491,7 +492,8 @@ body {
 }
 
 .ranking-list.all {
-  max-height: 220px;
+  min-height: 120px;
+  max-height: 300px;
   overflow: auto;
   padding-right: 6px;
 }
