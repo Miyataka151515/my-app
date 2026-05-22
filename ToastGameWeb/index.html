@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ひなたのひなったトースト</title>
+    <link rel="stylesheet" href="style.css?v=9">
+  </head>
+  <body>
+    <main class="phone">
+      <canvas id="game" width="1080" height="1920" aria-label="ひなたのひなったトースト"></canvas>
+      <section class="character-panel" aria-label="レイアウト調整" hidden>
+        <div id="characterStatus" class="character-status">キャラ読込中</div>
+        <div class="panel-title">キャラ</div>
+        <label>X <input id="characterX" type="range" min="-260" max="260" value="-196"><output></output></label>
+        <label>Y <input id="characterY" type="range" min="-260" max="260" value="-38"><output></output></label>
+        <label>サイズ <input id="characterScale" type="range" min="35" max="125" value="114"><output></output></label>
+        <label class="check-label">
+          <input id="removeBlack" type="checkbox">
+          背景を抜く
+        </label>
+        <div class="panel-title">レイヤー</div>
+        <label>テーブルY <input id="tableFrontY" type="range" min="640" max="1040" value="781"><output></output></label>
+        <label>パンX <input id="panCenterX" type="range" min="360" max="720" value="517"><output></output></label>
+        <label>パンY <input id="panCenterY" type="range" min="880" max="1320" value="1153"><output></output></label>
+        <label>パンW <input id="breadWidth" type="range" min="220" max="520" value="520"><output></output></label>
+        <label class="check-label">
+          <input id="showPan" type="checkbox" checked>
+          フライパン表示
+        </label>
+        <label class="check-label">
+          <input id="comparePans" type="checkbox">
+          重ねて比較
+        </label>
+        <label>フライパンW <input id="panWidth" type="range" min="420" max="1300" value="1163"><output></output></label>
+        <label>フライパン下 <input id="panBottomY" type="range" min="1100" max="2400" value="2284"><output></output></label>
+        <div class="panel-title">火力別フライパン補正</div>
+        <label class="check-label"><input id="showPan0" type="checkbox" checked>消火表示</label>
+        <label>消火X <input id="panOffsetX0" type="range" min="-120" max="120" value="-26"><output></output></label>
+        <label>消火Y <input id="panOffsetY0" type="range" min="-160" max="160" value="-40"><output></output></label>
+        <label class="check-label"><input id="showPan1" type="checkbox" checked>弱火表示</label>
+        <label>弱火X <input id="panOffsetX1" type="range" min="-120" max="120" value="2"><output></output></label>
+        <label>弱火Y <input id="panOffsetY1" type="range" min="-160" max="160" value="-42"><output></output></label>
+        <label class="check-label"><input id="showPan2" type="checkbox" checked>中火表示</label>
+        <label>中火X <input id="panOffsetX2" type="range" min="-120" max="120" value="29"><output></output></label>
+        <label>中火Y <input id="panOffsetY2" type="range" min="-160" max="160" value="-42"><output></output></label>
+        <label class="check-label"><input id="showPan3" type="checkbox" checked>強火表示</label>
+        <label>強火X <input id="panOffsetX3" type="range" min="-120" max="120" value="52"><output></output></label>
+        <label>強火Y <input id="panOffsetY3" type="range" min="-160" max="160" value="-45"><output></output></label>
+        <label class="check-label"><input id="showPan4" type="checkbox" checked>火事表示</label>
+        <label>火事X <input id="panOffsetX4" type="range" min="-120" max="120" value="68"><output></output></label>
+        <label>火事Y <input id="panOffsetY4" type="range" min="-160" max="160" value="-48"><output></output></label>
+        <div class="panel-title">UI</div>
+        <label>メーターX <input id="meterX" type="range" min="-240" max="240" value="0"><output></output></label>
+        <label>メーターY <input id="meterY" type="range" min="900" max="1600" value="1250"><output></output></label>
+        <label>メーターW <input id="meterWidth" type="range" min="280" max="760" value="500"><output></output></label>
+        <label>メッセージY <input id="messageY" type="range" min="520" max="980" value="675"><output></output></label>
+        <label>吹き出しX <input id="bubbleX" type="range" min="0" max="720" value="720"><output></output></label>
+        <label>吹き出しY <input id="bubbleY" type="range" min="260" max="820" value="337"><output></output></label>
+        <label>吹き出しW <input id="bubbleWidth" type="range" min="300" max="640" value="640"><output></output></label>
+        <label>先っちょX <input id="bubbleTailX" type="range" min="-220" max="220" value="0"><output></output></label>
+        <label>先っちょY <input id="bubbleTailY" type="range" min="-180" max="180" value="0"><output></output></label>
+        <label>ひなったX <input id="hinattaBubbleX" type="range" min="0" max="760" value="386"><output></output></label>
+        <label>ひなったY <input id="hinattaBubbleY" type="range" min="120" max="820" value="274"><output></output></label>
+        <label>ひなったW <input id="hinattaBubbleWidth" type="range" min="360" max="820" value="700"><output></output></label>
+        <button id="copyLayoutButton" class="copy-layout" type="button">数値をコピー</button>
+      </section>
+      <div id="tapEffects" class="tap-effects" aria-hidden="true"></div>
+      <div class="tap-row" aria-label="操作ボタン">
+        <button id="breadButton" class="tap-button bread" type="button">
+          <span class="button-icon bread-icon"></span>
+          <span>パン</span>
+        </button>
+        <button id="fireButton" class="tap-button fire" type="button">
+          <span class="button-icon fire-icon"></span>
+          <span>火</span>
+        </button>
+        <button id="timerButton" class="tap-button timer" type="button">
+          <span class="button-icon timer-icon"></span>
+          <span>タイマー</span>
+        </button>
+      </div>
+      <section id="gameOverlay" class="game-overlay">
+        <div class="overlay-hero" aria-hidden="true"></div>
+        <div class="overlay-card">
+          <div class="overlay-title-block">
+            <span class="overlay-kicker">Hinata Toast Challenge</span>
+            <h1>ひなたのひなったトースト</h1>
+            <p id="overlaySummary">45秒で何枚こんがり焼けるかな？</p>
+          </div>
+          <div id="overlayStats" class="overlay-stats"></div>
+          <label id="nameEntry" class="name-entry">
+            なまえ
+            <input id="playerName" maxlength="12" value="PLAYER">
+          </label>
+          <div class="overlay-actions">
+            <button id="startGameButton" class="primary-action" type="button">ゲーム開始</button>
+            <button id="helpButton" class="secondary-action" type="button">ゲーム説明</button>
+            <button id="rankingButton" class="secondary-action" type="button">ランキング一覧</button>
+            <button id="saveScoreButton" type="button" hidden>ランキング登録</button>
+          </div>
+          <div id="helpPanel" class="help-panel" hidden>
+            <p>パンの位置を決めて、火力メーターを止めて、焼き色がいい瞬間にタイマーを押そう。</p>
+            <p>真ん中に置くほど高得点。焼きすぎると「ひなった！」になるよ。</p>
+          </div>
+          <div id="rankingPanel" class="ranking-panel" hidden>
+            <div class="ranking-panel-head">
+              <h2>ランキング一覧</h2>
+              <button id="closeRankingButton" type="button">閉じる</button>
+            </div>
+            <ol id="rankingAllList" class="ranking-list all"></ol>
+          </div>
+          <div id="topRankingBlock" class="top-ranking-block" hidden>
+            <h2 class="ranking-title">TOP 10</h2>
+            <ol id="rankingList" class="ranking-list"></ol>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="game.js?v=9"></script>
+  </body>
+</html>
